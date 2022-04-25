@@ -1,7 +1,6 @@
 import type { AppProps } from 'next/app';
 import NextHead from 'next/head';
 import React from 'react';
-import TransactionList from '~/components/TransactionList';
 import getContractsAddresses from '~/hooks/GetContractsAddresses';
 import '~/styles/app.css';
 import Counter from './counter';
@@ -18,9 +17,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       {(!isCounter || address) &&
         <Component {...pageProps} address={address} />
       }
-      <section className="simple-container">
-        <TransactionList />
-      </section>
     </>
   )
 }
