@@ -2,8 +2,7 @@ import Dialog from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import Link from "next/link";
 import { ErrorCorrectLevel, QR8BitByte, QRCode } from "qrcode-generator-ts";
-import { useEffect, useState } from "react";
-import { pub1 } from "~/constants/contracts";
+import { useState } from "react";
 import { useAppState } from "~/hooks/useAppState";
 import useFirestore from "~/hooks/useFirestore";
 
@@ -32,7 +31,7 @@ const CreateWallet = () => {
   const handleOnCreateWalletClick = async () => {
     try {
       setLoading(true);
-      const pubKey = await add(pub1);
+      const pubKey = await add();
       createQRCode(pubKey as string);
       setShowModal(true);
     } catch (e) {
