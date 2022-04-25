@@ -15,8 +15,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const address = isCounter ? COUNTER_CONTRACT_ADDRESS : undefined;
   return (
     <ContextHandler>
-      <ApproveTransactionModal />
       <AppStateProvider>
+        <ApproveTransactionModal />
         <NextHead>
           <title>Stout</title>
         </NextHead>

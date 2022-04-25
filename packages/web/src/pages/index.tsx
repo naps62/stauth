@@ -7,7 +7,6 @@ import { Call } from "starknet/types";
 import {
   toBN
 } from "starknet/utils/number";
-import { fromCallsToExecuteCalldataWithNonce } from "starknet/utils/transaction";
 import { ERC20_ADDRESS, MULTISIG_ADDRESS } from "~/constants/contracts";
 import { useAppState } from "~/hooks/useAppState";
 import useFirestore from "~/hooks/useFirestore";
@@ -23,15 +22,14 @@ const Home: FC<Props & NextPage> = () => {
       {
         contractAddress: ERC20_ADDRESS,
         entrypoint: "mint",
-        calldata: [MULTISIG_ADDRESS, 20],
+        calldata: [MULTISIG_ADDRESS, toBN(20)],
       },
     ] as Call[];
     
     const VERSION = 0;
 
-    const nonce = 0;
+    const nonce = toBN(0);
     const maxFee = toBN("0");
-    const calldata = fromCallsToExecuteCalldataWithNonce(calls, maxFee);
 
     const signerDetails: InvocationsSignerDetails = {
       walletAddress: MULTISIG_ADDRESS,
@@ -42,11 +40,10 @@ const Home: FC<Props & NextPage> = () => {
     };
 
     const signer = new Signer(ec.getKeyPair(localStorage.getItem('privateKey') as string));
-    console.log(signer);
     const signature = await signer.signTransaction(calls, signerDetails);
     update({
-      calldata,
-      signCalldata: signature,
+      calldata: JSON.stringify(calls),
+      signedCalldata: JSON.stringify(signature),
       caller: localStorage.getItem('publicKey'),
       status: 'pending'
     });

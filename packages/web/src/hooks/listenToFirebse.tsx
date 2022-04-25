@@ -4,27 +4,26 @@ import { FirestoreContext } from "~/components/ContextHandler";
 import { useAppState } from "./useAppState";
 
 export interface FirebaseItem {
+  signedCalldata: string;
   deployed: boolean;
   status: string;
   key: string;
+  calldata: string;
+  caller: string;
 }
 
 const listenToFirebase = () => {
   const firestore = useContext(FirestoreContext);
-
+  
   const { publicKey } = useAppState();
 
   if (!firestore) return;
 
   const [data, setData] = useState<DocumentData>();
 
-  console.log(`key changed: ${publicKey}`);
-
   useEffect(() => {
-    console.log(publicKey);
 
     const fn = (doc: any) => {
-      console.log(data);
       setData(doc.data());
     };
 
@@ -34,8 +33,7 @@ const listenToFirebase = () => {
     return () => {
       !!unsubscribe && unsubscribe();
     };
-  }, [publicKey]);
-
+  }, [publicKey, setData]);
   return [data] as FirebaseItem[];
 };
 

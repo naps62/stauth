@@ -6,10 +6,10 @@ import React, {
   SetStateAction,
   useContext,
   useEffect,
-  useState,
+  useState
 } from "react";
 import { FirestoreContext } from "~/components/ContextHandler";
-import listenToFirebase, { FirebaseItem } from "./listenToFirebse";
+import { FirebaseItem } from "./listenToFirebse";
 
 interface AppState {
   loading: boolean;
@@ -38,9 +38,7 @@ export default function AppStateProvider({
     const value = store?.[0];
 
     if (!value) return;
-    console.log(loading, value?.deployed, value?.status === "idle");
     if (loading && value?.status === "idle") {
-      console.log("not loading");
       setLoading(false);
     }
   }, [store, publicKey]);
