@@ -1,4 +1,4 @@
-import compiledErc20 from '@starknet-bootcamp/contracts/starknet-artifacts/contracts/EthereumERC20.cairo/EthereumERC20_abi.json';
+import compiledErc20 from '@starknet-bootcamp/contracts/starknet-artifacts/contracts/StoutERC20.cairo/StoutERC20_abi.json';
 import { Abi, Contract } from "starknet";
 import { ERC20_ADDRESS } from '~/constants/contracts';
 

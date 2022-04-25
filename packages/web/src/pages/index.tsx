@@ -19,7 +19,7 @@ const Home: FC<Props & NextPage> = () => {
       {
         contractAddress: ERC20_ADDRESS,
         entrypoint: "mint",
-        calldata: [MULTISIG_ADDRESS, toBN(20)],
+        calldata: [MULTISIG_ADDRESS, toBN(20), toBN(20) /*for some strange reason we need this last param :S*/],
       },
     ] as Call[];
 

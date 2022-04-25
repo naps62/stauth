@@ -41,7 +41,7 @@
     "url-join": "^5.0.0"
   },
   "scripts": {
-    "compile": "yarn run compile:counter && yarn run compile:multisig && yarn run compile:erc20 && yarn run compile:2fasig && yarn compile:eth",
+    "compile": "yarn run compile:counter && yarn run compile:multisig && yarn run compile:erc20 && yarn run compile:2fasig",
     "compile:counter": "hardhat starknet-compile contracts/Counter.cairo --cairo-path 'openzeppelin_cairo/src'",
     "compile:multisig": "hardhat starknet-compile contracts/Multisig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract --disable-hint-validation",
     "compile:2fasig": "hardhat starknet-compile contracts/twofasig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract --disable-hint-validation",
