@@ -55,8 +55,20 @@ export default function useFirestore() {
     }
   }
 
+  async function update(data: any) {
+    const pubKey = localStorage.getItem('publicKey');
+    try {
+      await updateDoc(doc(firestore, "users", pubKey as string), {
+        ...data
+      });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
+
   return {
     add,
-    setDeployed
+    setDeployed,
+    update
   };
 }

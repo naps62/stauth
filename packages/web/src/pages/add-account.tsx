@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 import React, { FC, useContext, useState } from "react";
 import { ProviderContext } from "~/components/ContextHandler";
-import { pub1, pub2 } from "~/constants/contracts";
+import { pub1 } from "~/constants/contracts";
 import useFirestore from "~/hooks/useFirestore";
 
 const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
@@ -13,7 +13,7 @@ const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState("loading");
-    add(pub2);
+    add(pub1);
     // const secondKey = await add(event.currentTarget["key"]?.value);
     // const firstKey = localStorage.getItem("publicKey") as string;
     // await deployWallet(provider, [firstKey, secondKey as string]);
@@ -45,7 +45,7 @@ const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
       <button
         type="button"
         onClick={() => {
-          setDeployed(pub2);
+          setDeployed(pub1);
         }}
       >
         Done

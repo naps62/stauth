@@ -3,6 +3,7 @@ import { Abi, CompiledContract, Contract, Provider } from "starknet";
 import {
   toBN
 } from "starknet/utils/number";
+import { MULTISIG_ADDRESS } from '~/constants/contracts';
 
 export const deployWallet = async (provider: Provider, pubKeys: string[]) => {
   const firstKey = pubKeys[0];
@@ -19,7 +20,7 @@ export const deployWallet = async (provider: Provider, pubKeys: string[]) => {
 }
 
 export const getWalletContract = () => {
-  const walletAddress = localStorage.getItem('walletAddress');
+  const walletAddress = MULTISIG_ADDRESS;
   if (walletAddress) {
     return new Contract(compiledMultisig.abi as Abi, walletAddress as string);
   }
