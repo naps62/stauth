@@ -12,7 +12,7 @@
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "@openzeppelin/contracts": "4.5.0",
-    "@shardlabs/starknet-hardhat-plugin": "0.5.2",
+    "@shardlabs/starknet-hardhat-plugin": "0.5.3",
     "@typechain/ethers-v5": "^9.0.0",
     "@typechain/hardhat": "^4.0.0",
     "@types/chai": "^4.3.0",
@@ -41,7 +41,7 @@
   "scripts": {
     "compile": "yarn run compile:counter && yarn run compile:multisig",
     "compile:counter": "hardhat starknet-compile contracts/Counter.cairo --cairo-path 'openzeppelin_cairo/src'",
-    "compile:multisig": "hardhat starknet-compile contracts/Multisig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract",
+    "compile:multisig": "hardhat starknet-compile contracts/Multisig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract --disable-hint-validation",
     "deploy:devnet": "./src/scripts/deployStarknetContracts.sh devnet",
     "deploy:testnet": "./src/scripts/deployStarknetContracts.sh testnet",
     "test": "hardhat test --starknet-network devnet",

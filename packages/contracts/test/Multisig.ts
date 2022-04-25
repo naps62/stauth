@@ -14,7 +14,7 @@ describe("Multisig", function () {
     counter = await counterFactory.deploy({ initial: 0n, max: 10n });
 
     const multisigFactory = await starknet.getContractFactory("Multisig");
-    multisig = await multisigFactory.deploy();
+    multisig = await multisigFactory.deploy({ pk1: 2n, pk2: 1n });
   });
 
   it.only("works", async () => {
