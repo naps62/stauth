@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app';
 import NextHead from 'next/head';
 import React from 'react';
 import ContextHandler from '~/components/ContextHandler';
+import Header from '~/components/Header';
 import getContractsAddresses from '~/hooks/GetContractsAddresses';
 import '~/styles/app.css';
 import Counter from './counter';
@@ -15,6 +16,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <NextHead>
           <title>Stout</title>
       </NextHead>
+      <Header />
       {(!isCounter || address) &&
         <Component {...pageProps} address={address} />
       }
