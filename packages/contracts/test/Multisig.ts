@@ -27,7 +27,7 @@ const kp2 = ec.genKeyPair();
 const pub1 = ec.getStarkKey(kp1);
 const pub2 = ec.getStarkKey(kp2);
 const signer1 = new Signer(kp1);
-const signer2 = new Signer(kp1);
+const signer2 = new Signer(kp2);
 
 describe("Multisig", function () {
   this.timeout(30_000);
@@ -77,15 +77,6 @@ describe("Multisig", function () {
     const maxFee = toBN("0");
     const calldata = fromCallsToExecuteCalldataWithNonce(calls, maxFee);
 
-    const msgHash = hash.calculcateTransactionHash(
-      multisig.address,
-      VERSION,
-      hash.getSelectorFromName("__execute__"),
-      calldata,
-      maxFee,
-      StarknetChainId.TESTNET
-    );
-
     const signerDetails: InvocationsSignerDetails = {
       walletAddress: multisig.address,
       nonce,
@@ -94,16 +85,21 @@ describe("Multisig", function () {
       chainId: StarknetChainId.TESTNET,
     };
 
-    const signature = await signer1.signTransaction(calls, signerDetails);
+    const signature1 = await signer1.signTransaction(calls, signerDetails);
+    const signature2 = await signer2.signTransaction(calls, signerDetails);
 
     const request = {
       type: "INVOKE_FUNCTION",
       contract_address: multisig.address,
       entry_point_selector: hash.getSelectorFromName("__execute__"),
       calldata,
-      signature: bigNumberishArrayToDecimalStringArray(signature),
+      signature: bigNumberishArrayToDecimalStringArray(
+        signature1.concat(signature2)
+      ),
       max_fee: toHex(maxFee),
     };
+    console.log(signature1);
+    console.log(signature2);
 
     let response: any;
     await axios

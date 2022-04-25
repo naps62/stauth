@@ -102,27 +102,18 @@ func validate_signatures{
     end
 
     if signatures == 0:
-        validate_signatures(message, signatures_len - 1, signatures + 2, next + 1)
+        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1)
 
         return ()
     else:
         let (signer) = pub_keys.read(next)
-        tempvar r = signatures[0]
-        tempvar s = signatures[1]
-        %{
-            print(ids.signer)
-            print(ids.message)
-            print(ids.signatures)
-            print(ids.r)
-            print(ids.s)
-        %}
         verify_ecdsa_signature(
             message=message,
             public_key=signer,
             signature_r=signatures[0],
             signature_s=signatures[1])
 
-        # validate_signatures(message, signatures_len - 1, signatures + 2, next + 1)
+        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1)
 
         return ()
     end
