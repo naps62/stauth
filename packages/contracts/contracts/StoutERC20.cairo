@@ -23,10 +23,6 @@ from openzeppelin.token.erc20.library import (
     ERC20_mint,
     ERC20_initializer,
 )
-from openzeppelin.access.ownable import (
-    Ownable_initializer,
-    Ownable_only_owner,
-)
 
 @constructor
 func constructor{
@@ -34,8 +30,7 @@ func constructor{
         pedersen_ptr: HashBuiltin*,
         range_check_ptr
     }(recipient: felt, owner: felt):
-    ERC20_initializer('EthereumERC20', 'ETH', 18)
-    Ownable_initializer(owner)
+    ERC20_initializer('Stout', 'STOUT', 18)
 
     ERC20_mint(recipient, Uint256(1000000000000000000000, 0))
     return ()
