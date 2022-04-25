@@ -2,19 +2,21 @@ import Dialog from "@reach/dialog";
 import "@reach/dialog/styles.css";
 import Link from "next/link";
 import { ErrorCorrectLevel, QR8BitByte, QRCode } from "qrcode-generator-ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { pub1 } from "~/constants/contracts";
+import { useAppState } from "~/hooks/useAppState";
 import useFirestore from "~/hooks/useFirestore";
 
 const CreateWallet = () => {
+  const { setLoading, loading } = useAppState();
   const { add } = useFirestore();
-
   const [showModal, setShowModal] = useState(false);
   const [qrCode, setQrCode] = useState<string>("");
   const [url, setUrl] = useState<string>("");
 
   function createQRCode(pubKey: string) {
     const qr = new QRCode();
-    
+
     qr.setTypeNumber(10);
     qr.setErrorCorrectLevel(ErrorCorrectLevel.Q);
     qr.addData(
@@ -22,13 +24,15 @@ const CreateWallet = () => {
     );
     qr.make();
 
+    console.log(`${window.location.href}add-account?pub_key=${pubKey}`);
+
     setQrCode(qr.toDataURL());
   }
 
   const handleOnCreateWalletClick = async () => {
     try {
-      const pubKey = await add();      
-      setUrl(`${window.location.href}add-account?pub_key=${pubKey}`);
+      setLoading(true);
+      const pubKey = await add(pub1);
       createQRCode(pubKey as string);
       setShowModal(true);
     } catch (e) {

@@ -1,10 +1,12 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { useContext } from "react";
 import { FirestoreContext } from "~/components/ContextHandler";
 import { priv1, priv2, pub1, pub2 } from "~/constants/contracts";
+import { useAppState } from "./useAppState";
 
 export default function useFirestore() {
   const firestore = useContext(FirestoreContext);
+  const { setKeys} = useAppState();
 
   function generateKeys(isPrimaryKey: boolean = true) {
     /* const keyPair = ec.genKeyPair();
@@ -23,11 +25,13 @@ export default function useFirestore() {
       await setDoc(doc(firestore, "users", primaryKey ? primaryKey : keyPub), {
         key: primaryKey ? keyPub : "",
         calldata: "",
-        signedCalldata: ""
-      });
+        signedCalldata: "",
+        status: "pending",
+        deployed: false,
+      });      
+      
+      setKeys(primaryKey ? primaryKey : keyPub, keyPair);
 
-      localStorage.setItem('publicKey', primaryKey ? primaryKey : keyPub);
-      localStorage.setItem('privateKey', keyPair);
       if (primaryKey) {
         localStorage.setItem('publicKey2', keyPub);
       }
@@ -38,7 +42,21 @@ export default function useFirestore() {
     }
   }
 
+  async function setDeployed(primaryKey?: string) {
+    const { keyPub } = generateKeys(!!primaryKey);
+
+    try {
+      await updateDoc(doc(firestore, "users", primaryKey || keyPub), {
+        key: primaryKey || keyPub,        
+        status: "idle",
+      });      
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   return {
     add,
+    setDeployed
   };
 }

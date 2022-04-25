@@ -5,6 +5,7 @@ import {
   toBN
 } from "starknet/utils/number";
 import { getErc20Contract } from "~/utils/erc20";
+import { useAppState } from "~/hooks/useAppState";
 
 type Props = {}
 
@@ -17,9 +18,12 @@ const Home: FC<Props & NextPage> = () => {
       console.log(num);
     })();
   });
+  const { loading } = useAppState();
+
   return (
     <section className="simple-container">
       <h1>Stout</h1>
+      {loading && "Pending stuff"}
     </section>
   )
 }

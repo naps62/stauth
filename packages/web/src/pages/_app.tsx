@@ -1,11 +1,12 @@
-import type { AppProps } from 'next/app';
-import NextHead from 'next/head';
-import React from 'react';
-import ContextHandler from '~/components/ContextHandler';
-import Header from '~/components/Header';
-import getContractsAddresses from '~/hooks/GetContractsAddresses';
-import '~/styles/app.css';
-import Counter from './counter';
+import type { AppProps } from "next/app";
+import NextHead from "next/head";
+import React from "react";
+import ContextHandler from "~/components/ContextHandler";
+import Header from "~/components/Header";
+import getContractsAddresses from "~/hooks/GetContractsAddresses";
+import AppStateProvider from "~/hooks/useAppState";
+import "~/styles/app.css";
+import Counter from "./counter";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [COUNTER_CONTRACT_ADDRESS] = getContractsAddresses();
@@ -13,13 +14,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   const address = isCounter ? COUNTER_CONTRACT_ADDRESS : undefined;
   return (
     <ContextHandler>
-      <NextHead>
+      <AppStateProvider>
+        <NextHead>
           <title>Stout</title>
-      </NextHead>
-      <Header />
-      {(!isCounter || address) &&
-        <Component {...pageProps} address={address} />
-      }
+        </NextHead>
+        <Header />
+        {(!isCounter || address) && (
+          <Component {...pageProps} address={address} />
+        )}
+      </AppStateProvider>
     </ContextHandler>
-  )
+  );
 }

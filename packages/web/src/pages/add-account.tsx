@@ -1,16 +1,15 @@
 import { GetServerSideProps, NextPage } from "next";
 import React, { FC, useContext, useState } from "react";
 import { ProviderContext } from "~/components/ContextHandler";
-import { pub2 } from "~/constants/contracts";
+import { pub1, pub2 } from "~/constants/contracts";
 import useFirestore from "~/hooks/useFirestore";
 
 const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
   const provider = useContext(ProviderContext);
 
-  const { add } = useFirestore();
+  const { add, setDeployed } = useFirestore();
 
-  
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setState("loading");
@@ -19,6 +18,7 @@ const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
     // const firstKey = localStorage.getItem("publicKey") as string;
     // await deployWallet(provider, [firstKey, secondKey as string]);
     setState("done");
+
   }
 
   return (
@@ -32,11 +32,24 @@ const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
         <form onSubmit={handleFormSubmit}>
           <label>
             The public key you want to link
-            <input type="text" name="key" defaultValue={publicKey} disabled={!!publicKey} />
+            <input
+              type="text"
+              name="key"
+              defaultValue={publicKey}
+              disabled={!!publicKey}
+            />
           </label>
           <button type="submit">Add</button>
         </form>
       )}
+      <button
+        type="button"
+        onClick={() => {
+          setDeployed(pub2);
+        }}
+      >
+        Done
+      </button>
     </div>
   );
 };

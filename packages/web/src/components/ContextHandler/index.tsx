@@ -14,18 +14,29 @@ const firebaseConfig = {
   projectId: "stout-efefe",
   storageBucket: "stout-efefe.appspot.com",
   messagingSenderId: "248783523379",
-  appId: "1:248783523379:web:f51eccbaa1c3beff1fdd46"
+  appId: "1:248783523379:web:f51eccbaa1c3beff1fdd46",
 };
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
 const firestore = getFirestore();
 
-export const ProviderContext = createContext<Provider>(null as unknown as Provider);
-export const FirestoreContext = createContext<Firestore>(null as unknown as Firestore);
+export const ProviderContext = createContext<Provider>(
+  null as unknown as Provider
+);
+export const FirestoreContext = createContext<Firestore>(
+  null as unknown as Firestore
+);
+export const StateContext = createContext({
+  loading: false,
+});
+
+const state = {
+  loading: false,
+};
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const starknetProvider = defaultProvider;
@@ -34,13 +45,14 @@ const starknetProvider = defaultProvider;
 }); */
 
 const ContextHandler: FC<Props> = ({ children }) => {
-
   return (
-    <FirestoreContext.Provider value={firestore}>
-      <ProviderContext.Provider value={starknetProvider}>
-        {children}
-      </ProviderContext.Provider>
-    </FirestoreContext.Provider>
+    <StateContext.Provider value={state}>
+      <FirestoreContext.Provider value={firestore}>
+        <ProviderContext.Provider value={starknetProvider}>
+          {children}
+        </ProviderContext.Provider>
+      </FirestoreContext.Provider>
+    </StateContext.Provider>
   );
-}
+};
 export default ContextHandler;
