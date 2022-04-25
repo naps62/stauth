@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { Firestore, getFirestore } from "firebase/firestore";
 import { createContext, FC, ReactNode } from 'react';
-import { Provider } from 'starknet';
+import { defaultProvider, Provider } from 'starknet';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,9 +28,7 @@ interface Props {
   children: ReactNode
 }
 
-const starknetProvider = new Provider({
-  baseUrl: 'https://hackathon-2.starknet.io'
-});
+const starknetProvider = defaultProvider;
 
 const ContextHandler: FC<Props> = ({ children }) => {
 

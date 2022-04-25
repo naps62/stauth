@@ -13,18 +13,21 @@ export default function useFirestore() {
     return { keyPair, keyPub };
   }
 
-  async function add() {
+  async function add(primaryKey?: string) {
     const { keyPub, keyPair } = generateKeys();
 
     try {
-      await setDoc(doc(firestore, "users", keyPub), {
-        key: "",
+      await setDoc(doc(firestore, "users", primaryKey ? primaryKey : keyPub), {
+        key: primaryKey ? keyPub : "",
         calldata: "",
         signedCalldata: ""
       });
 
-      localStorage.setItem('publicKey', keyPub);
+      localStorage.setItem('publicKey', primaryKey ? primaryKey : keyPub);
       localStorage.setItem('privateKey', keyPair);
+      if (primaryKey) {
+        localStorage.setItem('publicKey2', keyPub);
+      }
 
       return keyPub;
     } catch (e) {

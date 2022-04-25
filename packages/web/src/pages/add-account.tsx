@@ -1,27 +1,28 @@
 import { GetServerSideProps, NextPage } from "next";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
+import { ProviderContext } from "~/components/ContextHandler";
 import useFirestore from "~/hooks/useFirestore";
+import { deployWallet } from "~/utils/multisig";
 
 const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
+  const provider = useContext(ProviderContext);
 
-  const { update } = useFirestore();
+  const { update, add } = useFirestore();
 
   async function updateDoc(firstKey: string, secondKey?: string) {
-    setState("loading");
-
     await update(firstKey, secondKey);
-
-    setState("done");
   }
-
+  
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
+    setState("loading");
+    const secondKey = await add(event.currentTarget["key"]?.value);
     const firstKey = localStorage.getItem("publicKey") as string;
-    const secondKey = event.currentTarget["key"]?.value;
-
+    
     await updateDoc(firstKey, secondKey);
+    await deployWallet(provider, [firstKey, secondKey as string]);
+    setState("done");
   }
 
   useEffect(() => {
