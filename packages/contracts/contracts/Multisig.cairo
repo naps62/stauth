@@ -48,6 +48,19 @@ func __execute__{
         ecdsa_ptr : SignatureBuiltin*}(
         call_array_len : felt, call_array : AccountCallArray*, calldata_len : felt,
         calldata : felt*, nonce : felt) -> (response_len : felt, response : felt*):
+    alloc_locals
+
+    # TODO validate signatures
+
+    # TMP: Convert `AccountCallArray` to 'Call'.
+    let (calls : Call*) = alloc()
+    from_call_array_to_call(call_array_len, call_array, calldata, calls)
+    let calls_len = call_array_len
+
+    let (response : felt*) = alloc()
+    let (response_len) = execute_list(calls_len, calls, response)
+
+    return (response_len, response)
 end
 
 func execute_list{syscall_ptr : felt*}(calls_len : felt, calls : Call*, response : felt*) -> (

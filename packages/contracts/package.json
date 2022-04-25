@@ -39,14 +39,12 @@
     "typescript": "^4.6.2"
   },
   "scripts": {
-    "compile": "yarn run compile:eth && yarn run compile:starknet",
-    "compile:eth": "hardhat compile",
-    "compile:starknet": "hardhat starknet-compile --cairo-path 'openzeppelin_cairo/src'",
-    "deploy:starknet:devnet": "./src/scripts/deployStarknetContracts.sh devnet",
-    "deploy:starknet:testnet": "./src/scripts/deployStarknetContracts.sh testnet",
-    "test": "yarn run test:starknet && yarn run test:bridge",
-    "test:starknet": "hardhat test test/L2/*.ts --starknet-network devnet",
-    "test:bridge": "hardhat test test/L1-L2-messaging/*.ts --starknet-network devnet --network ganache",
+    "compile": "yarn run compile:counter && yarn run compile:multisig",
+    "compile:counter": "hardhat starknet-compile contracts/Counter.cairo --cairo-path 'openzeppelin_cairo/src'",
+    "compile:multisig": "hardhat starknet-compile contracts/Multisig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract",
+    "deploy:devnet": "./src/scripts/deployStarknetContracts.sh devnet",
+    "deploy:testnet": "./src/scripts/deployStarknetContracts.sh testnet",
+    "test": "hardhat test --starknet-network devnet",
     "lint": "solhint contracts/**/*.sol && prettier --check . contracts/**/*.sol"
   }
 }
