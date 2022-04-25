@@ -29,7 +29,7 @@ const pub2 = ec.getStarkKey(kp2);
 const signer1 = new Signer(kp1);
 const signer2 = new Signer(kp2);
 
-describe("Multisig", function () {
+describe("2FASig", function () {
   this.timeout(30_000);
 
   let counter: StarknetContract;
@@ -37,12 +37,20 @@ describe("Multisig", function () {
   let multisigContract: Contract;
   let provider: Provider;
 
+  const merkleLeafs = [124, 125];
+  const merkleRoot =
+    455571898402516024591265345720711356365422160584912150000578530706912124657n;
+
   beforeEach(async () => {
     const counterFactory = await starknet.getContractFactory("Counter");
     counter = await counterFactory.deploy({ initial: 0n, max: 10n });
 
-    const multisigFactory = await starknet.getContractFactory("Multisig");
-    multisig = await multisigFactory.deploy({ _n: 2, pk1: pub1, pk2: pub2 });
+    const multisigFactory = await starknet.getContractFactory("twofasig");
+    multisig = await multisigFactory.deploy({
+      _n: 2,
+      pk: pub1,
+      _merkle_root: merkleRoot,
+    });
 
     provider = new Provider({
       baseUrl: "http://localhost:5000",
@@ -57,7 +65,7 @@ describe("Multisig", function () {
     );
   });
 
-  it("works", async () => {
+  it.only("works", async () => {
     const calls = [
       {
         contractAddress: counter.address,
@@ -86,7 +94,15 @@ describe("Multisig", function () {
     };
 
     const signature1 = await signer1.signTransaction(calls, signerDetails);
-    const signature2 = await signer2.signTransaction(calls, signerDetails);
+
+    const merkleLeaf =
+      "1743721452664603547538108163491160873761573033120794192633007665066782417603";
+    const merkleProofLen = "2";
+    const merkleProof = [
+      "275015828570532818958877094293872118179858708489648969448465143543997518327",
+      "3081470326846576744486900207655708080595997326743041181982939514729891127832",
+    ];
+    const signature2 = [merkleLeaf, merkleProofLen, ...merkleProof];
 
     const request = {
       type: "INVOKE_FUNCTION",
