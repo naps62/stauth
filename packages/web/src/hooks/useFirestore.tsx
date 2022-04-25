@@ -14,13 +14,19 @@ export default function useFirestore() {
   }
 
   async function add() {
-    const { keyPub } = generateKeys();
+    const { keyPub, keyPair } = generateKeys();
 
     try {
       await setDoc(doc(firestore, "users", keyPub), {
         key: "",
         calldata: "",
+        signedCalldata: ""
       });
+
+      localStorage.setItem('publicKey', keyPub);
+      localStorage.setItem('privateKey', keyPair);
+
+      return keyPub;
     } catch (e) {
       console.error("Error adding document: ", e);
     }
