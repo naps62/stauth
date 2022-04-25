@@ -21,6 +21,7 @@
     "@types/node": "^17.0.16",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.7.0",
+    "axios": "^0.26.1",
     "chai": "^4.3.6",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
@@ -33,10 +34,11 @@
     "prettier": "^2.5.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.3.6",
-    "starknet": "^3.5.1",
+    "starknet": "^3.10.1",
     "ts-node": "^10.5.0",
     "typechain": "^6.0.3",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.2",
+    "url-join": "^5.0.0"
   },
   "scripts": {
     "compile": "yarn run compile:counter && yarn run compile:multisig",

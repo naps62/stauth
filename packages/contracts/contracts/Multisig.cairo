@@ -5,7 +5,8 @@ from starkware.cairo.common.cairo_builtins import HashBuiltin, SignatureBuiltin
 # from openzeppelin_cairo.introspection.ERC165 import ERC165_supports_interface
 from starkware.cairo.common.memcpy import memcpy
 from starkware.cairo.common.alloc import alloc
-from starkware.starknet.common.syscalls import call_contract, get_Tx_info
+from starkware.starknet.common.syscalls import call_contract, get_tx_info
+from starkware.cairo.common.signature import verify_ecdsa_signature
 from starkware.cairo.common.hash import hash2
 
 #
@@ -53,7 +54,7 @@ end
 
 @constructor
 func constructor{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
-        _n : felt, pub_keys1 : felt, pk2 : felt):
+        _n : felt, pk1 : felt, pk2 : felt):
     # TODO move this to an array
     n.write(_n)
     pub_keys.write(1, pk1)
@@ -87,11 +88,6 @@ func __execute__{
     let (response : felt*) = alloc()
     let (response_len) = execute_list(calls_len, calls, response)
 
-    %{
-        print("hash:")
-        print(ids.response_len)
-    %}
-
     return (response_len, response)
 end
 
@@ -106,20 +102,30 @@ func validate_signatures{
     end
 
     if signatures == 0:
-        jmp recursive
-    end
+        validate_signatures(message, signatures_len - 1, signatures + 2, next + 1)
 
-    with_attr error_message("signer signature invalid"):
+        return ()
+    else:
         let (signer) = pub_keys.read(next)
+        tempvar r = signatures[0]
+        tempvar s = signatures[1]
+        %{
+            print(ids.signer)
+            print(ids.message)
+            print(ids.signatures)
+            print(ids.r)
+            print(ids.s)
+        %}
         verify_ecdsa_signature(
             message=message,
             public_key=signer,
             signature_r=signatures[0],
             signature_s=signatures[1])
-    end
 
-    recursive:
-    validate_signatures(message, signatures_len - 1, signatures + 2, next + 1)
+        # validate_signatures(message, signatures_len - 1, signatures + 2, next + 1)
+
+        return ()
+    end
 end
 
 func execute_list{syscall_ptr : felt*}(calls_len : felt, calls : Call*, response : felt*) -> (

@@ -8,6 +8,8 @@ services:
     # entrypoint: ["starknet-devnet", "--host", "0.0.0.0", "--lite-mode"]
     ports:
       - "5000:5000"
+    environment:
+      - PYTHONUNBUFFERED=1
 
   ganache:
     image: trufflesuite/ganache:v7.0.3
