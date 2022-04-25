@@ -26,14 +26,13 @@ export default function useFirestore() {
     }
   }
 
-  async function update(targetKey: string) {
-    const target = doc(firestore, "users", targetKey);
-
-    const { keyPub } = generateKeys();
+  async function update(firstKey: string, secondKey?: string) {
+    const targetDoc = doc(firestore, "users", firstKey);
+    const associatedKey = secondKey || generateKeys().keyPub;
 
     try {
-      await updateDoc(target, {
-        key: keyPub,
+      await updateDoc(targetDoc, {
+        key: associatedKey,
       });
     } catch (e) {
       console.error("Error updating document: ", e);
