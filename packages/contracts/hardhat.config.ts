@@ -28,6 +28,9 @@ const config = {
     devnet: {
       url: "http://localhost:5000",
     },
+    env2: {
+      url: "https://hackathon-2.starknet.io",
+    },
     testnet: {
       url: "https://alpha4.starknet.io",
     },

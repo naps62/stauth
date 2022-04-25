@@ -47,6 +47,7 @@
     "compile:erc20": "hardhat starknet-compile contracts/EthereumERC20.cairo --cairo-path 'openzeppelin_cairo/src'",
     "deploy:devnet": "./src/scripts/deployStarknetContracts.sh devnet",
     "deploy:testnet": "./src/scripts/deployStarknetContracts.sh testnet",
+    "deploy:env2": "./src/scripts/deployStarknetContracts.sh env2",
     "test": "hardhat test --starknet-network devnet",
     "lint": "solhint contracts/**/*.sol && prettier --check . contracts/**/*.sol"
   }
