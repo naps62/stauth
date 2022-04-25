@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@argent/get-starknet@^3.0.0":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@argent/get-starknet/-/get-starknet-3.0.1.tgz#b3f80fd54528d4281bc5f3162d2576bb47c1c786"
-  integrity sha512-4jWzAU/vc6WWCrS5CabyrEVeQhYcYO6bLMgbJld+QRV6zlwgtRcsjjyfyxL9gKqP2IJI6V6dBHUdmvbxheUPQA==
-
 "@babel/code-frame@^7.0.0":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.16.7.tgz#44416b6bd7624b998f5b1af5d470856c40138789"
@@ -851,13 +846,6 @@
   integrity sha512-eLjj2L6AuQjBB6s/ibwCAc0DwrR5Ge+ys+wgWo+bviU7fV2nTMQhU63CGaDKXg9iTmMxwhkyoggdIR7ZGRfMgw==
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
-
-"@starknet-react/core@^0.6.3":
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.6.3.tgz#63efc42791b77d982df544cfeeed7c1e8c66c86c"
-  integrity sha512-fh4ud44hPs/uWy6RVMSTE+/Bazcr6nZm3lmiYse8A1HkjrGcm9rbn4IdRcKhzPB+hCz/5CVZkQs/Fukh01va9Q==
-  dependencies:
-    immutable "^4.0.0"
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
