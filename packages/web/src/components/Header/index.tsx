@@ -7,9 +7,10 @@ import styles from './header.module.scss';
 const Header = () => {
   const [privateKey, setPrivateKey] = useState<string | null>(null);
   const data = listenToFirebase();
+  console.log(data);
   useEffect(() => {
     setPrivateKey(localStorage.getItem('privateKey'));
-  }, []);
+  }, [data[0]]);
   return (
     <section className={`simple-container ${styles.header}`}>
       <div className={styles.logo}></div>

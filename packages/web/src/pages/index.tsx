@@ -1,6 +1,9 @@
 import "@reach/dialog/styles.css";
 import type { NextPage } from 'next';
 import { FC, useEffect } from 'react';
+import {
+  toBN
+} from "starknet/utils/number";
 import { getErc20Contract } from "~/utils/erc20";
 
 type Props = {}
@@ -10,7 +13,8 @@ const Home: FC<Props & NextPage> = () => {
   useEffect(() => {
     (async () => {
       const res = await erc20.call('totalSupply');
-      console.log(res);
+      const num = toBN(res.res, 16).toString()
+      console.log(num);
     })();
   });
   return (

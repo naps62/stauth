@@ -29,6 +29,9 @@ interface Props {
 }
 
 const starknetProvider = defaultProvider;
+/* const starknetProvider = new Provider({
+  baseUrl: 'https://hackathon-2.starknet.io'
+}); */
 
 const ContextHandler: FC<Props> = ({ children }) => {
 
