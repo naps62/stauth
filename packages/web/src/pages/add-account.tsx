@@ -3,6 +3,7 @@ import React, { FC, useContext, useState } from "react";
 import { ProviderContext } from "~/components/ContextHandler";
 import { pub1 } from "~/constants/contracts";
 import useFirestore from "~/hooks/useFirestore";
+import {deployWallet} from "~/utils/multisig";
 
 const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
@@ -17,6 +18,10 @@ const AddAccount: FC<{ publicKey: string } & NextPage> = ({ publicKey }) => {
     // const secondKey = await add(event.currentTarget["key"]?.value);
     // const firstKey = localStorage.getItem("publicKey") as string;
     // await deployWallet(provider, [firstKey, secondKey as string]);
+    const secondKey = "0x053329e1439fd47b2d7242a5d69ce52eb23d6ee87b22436741cb0a26eee2bedc" //await add(event.currentTarget["key"]?.value);
+    const firstKey = "0x057c631bdb696d9f4ace6d5f20d0dbb0886568780f5c367719d7cbe971d4729d" //localStorage.getItem("publicKey") as string;
+
+    const result = await deployWallet(provider, [firstKey, secondKey as string]);
     setState("done");
 
   }
