@@ -49,6 +49,10 @@ func pub_keys_len() -> (len : felt):
 end
 
 @storage_var
+func _nonce() -> (nonce : felt):
+end
+
+@storage_var
 func n() -> (n : felt):
 end
 
@@ -87,6 +91,10 @@ func __execute__{
 
     let (response : felt*) = alloc()
     let (response_len) = execute_list(calls_len, calls, response)
+
+    let (current_nonce) = _nonce.read()
+    assert nonce = current_nonce
+    _nonce.write(current_nonce + 1)
 
     return (response_len, response)
 end
@@ -159,4 +167,14 @@ func from_call_array_to_call{syscall_ptr : felt*}(
     from_call_array_to_call(
         call_array_len - 1, call_array + AccountCallArray.SIZE, calldata, calls + Call.SIZE)
     return ()
+end
+
+#
+# Views
+#
+
+@view
+func nonce{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}() -> (nonce : felt):
+    let (nonce) = _nonce.read()
+    return (nonce)
 end

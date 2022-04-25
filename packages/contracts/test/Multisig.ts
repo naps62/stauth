@@ -98,8 +98,6 @@ describe("Multisig", function () {
       ),
       max_fee: toHex(maxFee),
     };
-    console.log(signature1);
-    console.log(signature2);
 
     let response: any;
     await axios
@@ -116,9 +114,11 @@ describe("Multisig", function () {
 
     await provider.waitForTransaction(response!.data.transaction_hash);
 
-    const { value } = await counter.call("read");
+    const { value: currentCounter } = await counter.call("read");
+    expect(currentCounter).to.equal(2n);
 
-    expect(value).to.equal(2n);
+    const { nonce: currentNonce } = await multisig.call("nonce");
+    expect(currentNonce).to.equal(1n);
   });
 
   const selector = (fn: string) => hash.starknetKeccak(fn);
