@@ -41,11 +41,11 @@
     "url-join": "^5.0.0"
   },
   "scripts": {
-    "compile": "yarn run compile:counter && yarn run compile:multisig && yarn run compile:erc20 && yarn run compile:2fasig",
+    "compile": "yarn run compile:counter && yarn run compile:multisig && yarn run compile:erc20 && yarn run compile:2fasig && yarn compile:eth",
     "compile:counter": "hardhat starknet-compile contracts/Counter.cairo --cairo-path 'openzeppelin_cairo/src'",
     "compile:multisig": "hardhat starknet-compile contracts/Multisig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract --disable-hint-validation",
     "compile:2fasig": "hardhat starknet-compile contracts/twofasig.cairo --cairo-path 'openzeppelin_cairo/src' --account-contract --disable-hint-validation",
-    "compile:erc20": "hardhat starknet-compile contracts/EthereumERC20.cairo --cairo-path 'openzeppelin_cairo/src'",
+    "compile:erc20": "hardhat starknet-compile contracts/StoutERC20.cairo --cairo-path 'openzeppelin_cairo/src'",
     "deploy:devnet": "./src/scripts/deployStarknetContracts.sh devnet",
     "deploy:testnet": "./src/scripts/deployStarknetContracts.sh testnet",
     "deploy:env2": "./src/scripts/deployStarknetContracts.sh env2",
