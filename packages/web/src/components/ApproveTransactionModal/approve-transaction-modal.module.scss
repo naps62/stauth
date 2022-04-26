@@ -3,3 +3,30 @@
   overflow-x: auto;
   overflow-y: hidden;
 }
+.wrapper {
+  h3 {
+    color: #000;
+    border: 0;
+  }
+
+  pre {
+    margin-bottom: 16px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      color: #fff;
+      padding: 10px 20px;
+    }
+
+    button:first-of-type {
+      background: green;
+    }
+    button:last-of-type {
+      background: #e65;
+    }
+  }
+}

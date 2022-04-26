@@ -17,7 +17,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ContextHandler>
       <AppStateProvider>
-        <ApproveTransactionModal />
         <NextHead>
           <title>Stout</title>
         </NextHead>
@@ -25,6 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           {(!isCounter || address) && (
             <Component {...pageProps} address={address} />
           )}
+          <ApproveTransactionModal />
         </Layout>
       </AppStateProvider>
     </ContextHandler>

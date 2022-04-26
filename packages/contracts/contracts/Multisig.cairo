@@ -8,6 +8,7 @@ from starkware.cairo.common.alloc import alloc
 from starkware.starknet.common.syscalls import call_contract, get_tx_info
 from starkware.cairo.common.signature import verify_ecdsa_signature
 from starkware.cairo.common.hash import hash2
+from starkware.cairo.common.math import assert_le
 
 #
 # Structs
@@ -82,7 +83,7 @@ func __execute__{
     # TODO validate signatures
     let (tx_info) = get_tx_info()
     let (n_sigs) = n.read()
-    validate_signatures(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature, 1)
+    validate_signatures(tx_info.transaction_hash, tx_info.signature_len, tx_info.signature, 1, 0)
 
     # TMP: Convert `AccountCallArray` to 'Call'.
     let (calls : Call*) = alloc()
@@ -102,15 +103,18 @@ end
 func validate_signatures{
         syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, ecdsa_ptr : SignatureBuiltin*,
         range_check_ptr}(
-        message : felt, signatures_len : felt, signatures : felt*, next : felt) -> ():
+        message : felt, signatures_len : felt, signatures : felt*, next : felt,
+        validated : felt) -> ():
     alloc_locals
 
     if signatures_len == 0:
+        let (n) = _n.read()
+        assert_le(n, validated)
         return ()
     end
 
     if signatures == 0:
-        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1)
+        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1, validated)
 
         return ()
     else:
@@ -121,7 +125,7 @@ func validate_signatures{
             signature_r=signatures[0],
             signature_s=signatures[1])
 
-        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1)
+        validate_signatures(message, signatures_len - 2, signatures + 2, next + 1, validated + 1)
 
         return ()
     end

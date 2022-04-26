@@ -1,29 +1,42 @@
 @import "./reset.css";
 @import "./theme.css";
 
-*, *::after, *::before {
+:root {
+  --gold: #eda600;
+}
+
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
 h1 {
-	margin: 20px 0;
+  margin: 20px 0;
 }
 
 p {
-	margin: 25px 0;
+  margin: 25px 0;
 }
 
 .exercises-info {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
 }
 
 .exercises-info > div {
-	flex: 1;
+  flex: 1;
 }
 
 button {
-	cursor: pointer;
+  padding: 10px 16px;
+  font-size: 18px;
+  border: 0;
+  color: var(--background-color);
+  background: var(--gold);
+  border-radius: 4px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
 }

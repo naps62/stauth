@@ -15,7 +15,7 @@ const Header = () => {
       <h1 className={styles.logo}>STOUT</h1>
       <div className={styles.logo}></div>
       <div className={styles.actions}>
-        <CreateWallet />
+        {!data?.[0]?.key && <CreateWallet />}
         {!data ||
           (data && !data[0]?.key && (
             <Link href="/add-account">

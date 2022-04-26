@@ -11,6 +11,7 @@ export interface FirebaseItem {
   key: string;
   calldata: string;
   caller: string;
+  linked: boolean;
 }
 
 const listenToFirebase = () => {

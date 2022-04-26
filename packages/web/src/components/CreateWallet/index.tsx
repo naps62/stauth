@@ -3,16 +3,17 @@ import Styles from "./createWallet.module.scss";
 import "@reach/dialog/styles.css";
 import Link from "next/link";
 import { ErrorCorrectLevel, QR8BitByte, QRCode } from "qrcode-generator-ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppState } from "~/hooks/useAppState";
 import useFirestore from "~/hooks/useFirestore";
 
 const CreateWallet = () => {
-  const { setLoading, loading } = useAppState();
+  const { setLoading, loading , linked} = useAppState();
   const { add } = useFirestore();
   const [showModal, setShowModal] = useState(false);
   const [qrCode, setQrCode] = useState<string>("");
   const [url, setUrl] = useState<string>("");
+  const [message, setMessage] = useState("");
 
   function createQRCode(pubKey: string) {
     const qr = new QRCode();
@@ -30,6 +31,7 @@ const CreateWallet = () => {
   const handleOnCreateWalletClick = async () => {
     try {
       setLoading(true);
+      setMessage("Waiting to be linked...")
       const pubKey = await add();
       createQRCode(pubKey as string);
       setUrl(`${window.location.href}add-account?pub_key=${pubKey}`);
@@ -38,6 +40,16 @@ const CreateWallet = () => {
       console.error("Error adding document: ", e);
     }
   };
+
+  useEffect(() => {
+    if (linked) {
+      setMessage("You're linked!")
+
+      setTimeout(() => {
+        setShowModal(false);
+      }, 2000);
+    }
+  }, [linked]);
 
   return (
     <>
@@ -50,6 +62,7 @@ const CreateWallet = () => {
           isOpen={showModal}
           onDismiss={() => setShowModal(false)}
         >
+          <p className={Styles.message}>{message}</p>
           <img src={qrCode} className={Styles.img} />
           <Link href={url} passHref>
             <a target="_blank">Open link</a>

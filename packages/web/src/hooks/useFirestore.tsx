@@ -6,7 +6,7 @@ import { useAppState } from "./useAppState";
 
 export default function useFirestore() {
   const firestore = useContext(FirestoreContext);
-  const { setKeys} = useAppState();
+  const { setKeys } = useAppState();
 
   function generateKeys(isPrimaryKey: boolean = true) {
     /* const keyPair = ec.genKeyPair();
@@ -28,12 +28,12 @@ export default function useFirestore() {
         signedCalldata: "",
         status: "pending",
         deployed: false,
-      });      
-      
+      });
+
       setKeys(primaryKey ? primaryKey : keyPub, keyPair);
 
       if (primaryKey) {
-        localStorage.setItem('publicKey2', keyPub);
+        localStorage.setItem("publicKey2", keyPub);
       }
 
       return keyPub;
@@ -47,19 +47,52 @@ export default function useFirestore() {
 
     try {
       await updateDoc(doc(firestore, "users", primaryKey || keyPub), {
-        key: primaryKey || keyPub,        
+        key: primaryKey || keyPub,
         status: "idle",
-      });      
-    } catch(e) {
+      });
+    } catch (e) {
       console.log(e);
     }
   }
 
   async function update(data: any) {
-    const pubKey = localStorage.getItem('publicKey');
+    const pubKey = localStorage.getItem("publicKey");
     try {
       await updateDoc(doc(firestore, "users", pubKey as string), {
-        ...data
+        ...data,
+      });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
+
+  async function setApproval(approved?: boolean) {
+    const pubKey = localStorage.getItem("publicKey");
+    try {
+      await updateDoc(doc(firestore, "users", pubKey as string), {
+        status: approved ? "done" : "rejected",
+      });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
+
+  async function deploy() {
+    const pubKey = localStorage.getItem("publicKey");
+    try {
+      await updateDoc(doc(firestore, "users", pubKey as string), {
+        deployed: true,
+      });
+    } catch (e) {
+      console.error("Error updating document: ", e);
+    }
+  }
+
+  async function setLinked(data: any) {
+    const pubKey = localStorage.getItem("publicKey");
+    try {
+      await updateDoc(doc(firestore, "users", pubKey as string), {
+        linked: true,
       });
     } catch (e) {
       console.error("Error updating document: ", e);
@@ -69,6 +102,9 @@ export default function useFirestore() {
   return {
     add,
     setDeployed,
-    update
+    update,
+    setApproval,
+    deploy,
+    setLinked,
   };
 }

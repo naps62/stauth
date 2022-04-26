@@ -6,7 +6,7 @@ import React, {
   SetStateAction,
   useContext,
   useEffect,
-  useState
+  useState,
 } from "react";
 import { FirestoreContext } from "~/components/ContextHandler";
 import { FirebaseItem } from "./listenToFirebse";
@@ -18,6 +18,13 @@ interface AppState {
   store: FirebaseItem[] | undefined;
   publicKey: string;
   setKeys: (publicKey: string, privateKey: string) => void;
+  isSender: boolean;
+  setIsSender: Dispatch<SetStateAction<boolean>>;
+  rejectedByValidator: boolean;
+  setRejectedByValidator: Dispatch<SetStateAction<boolean>>;
+  txComplete: boolean;
+  linked: boolean;
+  setTxComplete: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AppStateContext = createContext({} as AppState);
@@ -28,9 +35,13 @@ export default function AppStateProvider({
   children: ReactNode;
 }) {
   const [loading, setLoading] = useState(false);
+  const [rejectedByValidator, setRejectedByValidator] = useState(false);
+  const [isSender, setIsSender] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
   const [publicKey, setPublicKey] = useState("");
+  const [txComplete, setTxComplete] = useState(false);
   const [store, setStore] = useState<FirebaseItem[]>([]);
+  const [linked, setLinked] = useState(false);
 
   const firestore = useContext(FirestoreContext);
 
@@ -41,10 +52,27 @@ export default function AppStateProvider({
     if (loading && value?.status === "idle") {
       setLoading(false);
     }
+
+    if (loading && value?.key) {
+      setLoading(false);
+    }
+
+    if (value?.status === "rejected") {
+      setRejectedByValidator(true);
+    }
+
+    if (value?.linked) {
+      setLinked(true);
+    }
+
+    if (value?.status === "done") {
+      setTxComplete(true);
+    }
   }, [store, publicKey]);
 
   useEffect(() => {
     const fn = (doc: any) => {
+      console.log(doc.data());
       setStore([doc.data()]);
     };
 
@@ -77,6 +105,13 @@ export default function AppStateProvider({
         publicKey,
         setKeys,
         store,
+        setIsSender,
+        isSender,
+        rejectedByValidator,
+        setRejectedByValidator,
+        txComplete,
+        setTxComplete,
+        linked,
       }}
     >
       {children}

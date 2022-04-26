@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { FC, useContext, useState } from "react";
 import { ProviderContext } from "~/components/ContextHandler";
 import { pub1 } from "~/constants/contracts";
@@ -9,7 +10,9 @@ export default function AddAccount({ publicKey }: { publicKey: string }) {
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
   const provider = useContext(ProviderContext);
 
-  const { add, setDeployed } = useFirestore();
+  const router = useRouter();
+
+  const { add, deploy, setLinked } = useFirestore();
 
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,30 +30,36 @@ export default function AddAccount({ publicKey }: { publicKey: string }) {
       firstKey,
       secondKey as string,
     ]);
+
+    await deploy();
+
     setState("done");
+    setLinked(true);
+
+    setTimeout(() => {
+      router.push("/");
+    }, 1000);
   }
 
   return (
     <div>
-      {state === "loading" && (
-        <p>Linking you to {publicKey.substring(0, 10)}...</p>
-      )}
-      {state === "done" && <p>You're all set!</p>}
-      {state === "idle" && (
-        <form onSubmit={handleFormSubmit} className={Styles.form}>
-          <h1>Add account</h1>
-          <label>
-            The public key you want to link
-            <input
-              type="text"
-              name="key"
-              defaultValue={publicKey}
-              disabled={!!publicKey}
-            />
-          </label>
-          <button type="submit">Add</button>
-        </form>
-      )}
+      <form onSubmit={handleFormSubmit} className={Styles.form}>
+        <h1>Add account</h1>
+        <label>
+          The public key you want to link
+          <input
+            type="text"
+            name="key"
+            defaultValue={publicKey}
+            disabled={!!publicKey}
+          />
+        </label>
+        <button type="submit">Add</button>
+        {state === "loading" && (
+          <p>Linking you to {publicKey.substring(0, 10)}...</p>
+        )}
+        {state === "done" && <p>You're all set!</p>}
+      </form>
     </div>
   );
 }

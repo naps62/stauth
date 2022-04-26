@@ -93,8 +93,6 @@ describe("2FASig", function () {
       chainId: StarknetChainId.TESTNET,
     };
 
-    const signature1 = await signer1.signTransaction(calls, signerDetails);
-
     const merkleLeaf =
       "1743721452664603547538108163491160873761573033120794192633007665066782417603";
     const merkleProofLen = "2";
@@ -102,16 +100,16 @@ describe("2FASig", function () {
       "275015828570532818958877094293872118179858708489648969448465143543997518327",
       "3081470326846576744486900207655708080595997326743041181982939514729891127832",
     ];
-    const signature2 = [merkleLeaf, merkleProofLen, ...merkleProof];
+
+    const sig1 = await signer1.signTransaction(calls, signerDetails);
+    const sig2 = [merkleLeaf, merkleProofLen, ...merkleProof];
 
     const request = {
       type: "INVOKE_FUNCTION",
       contract_address: multisig.address,
       entry_point_selector: hash.getSelectorFromName("__execute__"),
       calldata,
-      signature: bigNumberishArrayToDecimalStringArray(
-        signature1.concat(signature2)
-      ),
+      signature: bigNumberishArrayToDecimalStringArray(sig1.concat(sig2)),
       max_fee: toHex(maxFee),
     };
 
