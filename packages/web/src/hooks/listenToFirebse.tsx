@@ -4,6 +4,7 @@ import { FirestoreContext } from "~/components/ContextHandler";
 import { useAppState } from "./useAppState";
 
 export interface FirebaseItem {
+  nonce: number;
   signedCalldata: string;
   deployed: boolean;
   status: string;

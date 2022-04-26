@@ -8,6 +8,7 @@ import { MULTISIG_ADDRESS } from "~/constants/contracts";
 import listenToFirebase from "~/hooks/listenToFirebse";
 import { getWalletContract } from "~/utils/multisig";
 import { ProviderContext } from "../ContextHandler";
+import styles from './approve-transaction-modal.module.scss';
 
 const ApproveTransactionModal = () => {
   const data = listenToFirebase();
@@ -24,7 +25,7 @@ const ApproveTransactionModal = () => {
     if (data && data[0].calldata && data[0].caller) {
       const isSecond = !!localStorage.getItem('publicKey2');
       const VERSION = 0;
-      const nonce = toBN(0);
+      const nonce = toBN(data[0].nonce);
       const maxFee = toBN("0");
       const respCalldata = JSON.parse(data[0].calldata);
       const respSignCalldata = JSON.parse(data[0].signedCalldata);
@@ -89,7 +90,7 @@ const ApproveTransactionModal = () => {
     >
       <div>
         <h3>Sign transaction:</h3>
-        <pre>{data && data[0]?.calldata}</pre>
+        <pre className={styles.transactionSnippet}>{(data && data[0]?.calldata) ? JSON.stringify(JSON.parse((data && data[0]?.calldata) as string), null, 2) : ""}</pre>
         <button onClick={handleOnSignTransactionClick}>Sign</button>
         <button>cancel</button>
       </div>
