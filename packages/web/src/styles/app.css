@@ -13,12 +13,6 @@ p {
 	margin: 25px 0;
 }
 
-button {
-	padding: 18px 36px;
-	border-radius: 20px;
-	border: none;
-}
-
 .exercises-info {
 	display: flex;
 	justify-content: space-between;

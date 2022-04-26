@@ -1,0 +1,18 @@
+.modalContent {
+  display: flex;  
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 400px;
+  width: 400px;
+  border-radius: 2px;
+
+  a {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+.img {
+  margin: 0 auto;
+  max-width: 400px;
+}

@@ -1,4 +1,5 @@
 import Dialog from "@reach/dialog";
+import Styles from "./createWallet.module.scss";
 import "@reach/dialog/styles.css";
 import Link from "next/link";
 import { ErrorCorrectLevel, QR8BitByte, QRCode } from "qrcode-generator-ts";
@@ -16,14 +17,12 @@ const CreateWallet = () => {
   function createQRCode(pubKey: string) {
     const qr = new QRCode();
 
-    qr.setTypeNumber(10);
+    qr.setTypeNumber(15);
     qr.setErrorCorrectLevel(ErrorCorrectLevel.Q);
     qr.addData(
       new QR8BitByte(`${window.location.href}add-account?pub_key=${pubKey}`)
     );
     qr.make();
-
-    console.log(`${window.location.href}add-account?pub_key=${pubKey}`);
 
     setQrCode(qr.toDataURL());
   }
@@ -33,6 +32,7 @@ const CreateWallet = () => {
       setLoading(true);
       const pubKey = await add();
       createQRCode(pubKey as string);
+      setUrl(`${window.location.href}add-account?pub_key=${pubKey}`);
       setShowModal(true);
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -42,17 +42,20 @@ const CreateWallet = () => {
   return (
     <>
       <button onClick={handleOnCreateWalletClick}>Create new wallet</button>
-      <Dialog
-        aria-label="Scan this QR Code"
-        style={{ color: "red" }}
-        isOpen={showModal}
-        onDismiss={() => setShowModal(false)}
-      >
-        <img src={qrCode} />
-        <Link href={url}>
-          <a>Link</a>
-        </Link>
-      </Dialog>
+      <div className={Styles.wrapper}>
+        <Dialog
+          className={Styles.modalContent}
+          aria-label="Scan this QR Code"
+          style={{ color: "red" }}
+          isOpen={showModal}
+          onDismiss={() => setShowModal(false)}
+        >
+          <img src={qrCode} className={Styles.img} />
+          <Link href={url} passHref>
+            <a target="_blank">Open link</a>
+          </Link>
+        </Dialog>
+      </div>
     </>
   );
 };

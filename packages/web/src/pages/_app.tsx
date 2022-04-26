@@ -4,6 +4,7 @@ import React from "react";
 import ApproveTransactionModal from "~/components/ApproveTransactionModal";
 import ContextHandler from "~/components/ContextHandler";
 import Header from "~/components/Header";
+import Layout from "~/components/Layout";
 import getContractsAddresses from "~/hooks/GetContractsAddresses";
 import AppStateProvider from "~/hooks/useAppState";
 import "~/styles/app.css";
@@ -20,10 +21,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NextHead>
           <title>Stout</title>
         </NextHead>
-        <Header />
-        {(!isCounter || address) && (
-          <Component {...pageProps} address={address} />
-        )}
+        <Layout>
+          {(!isCounter || address) && (
+            <Component {...pageProps} address={address} />
+          )}
+        </Layout>
       </AppStateProvider>
     </ContextHandler>
   );

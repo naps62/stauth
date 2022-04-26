@@ -8,13 +8,14 @@ const Header = () => {
   const [privateKey, setPrivateKey] = useState<string | null>(null);
   const data = listenToFirebase();
   useEffect(() => {
-    setPrivateKey(localStorage.getItem('privateKey'));
+    setPrivateKey(localStorage.getItem("privateKey"));
   }, [data]);
   return (
-    <section className={`simple-container ${styles.header}`}>
+    <section className={styles.header}>
+      <h1 className={styles.logo}>STOUT</h1>
       <div className={styles.logo}></div>
       <div className={styles.actions}>
-        {!privateKey && <CreateWallet />}
+        <CreateWallet />
         {!data ||
           (data && !data[0]?.key && (
             <Link href="/add-account">

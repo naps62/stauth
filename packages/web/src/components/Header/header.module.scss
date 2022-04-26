@@ -2,10 +2,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 78px;
-  .logo {}
+  padding: 20px 0;
+
+  .logo {
+    font-weight: bold;
+  }
+
   .actions {
     display: flex;
     gap: 15px;
+  }
+
+  button {
+    padding: 10px 16px;
+    font-size: 18px;
+    border: 0;
+    background: #fff;
+    border-radius: 2px;
   }
 }
